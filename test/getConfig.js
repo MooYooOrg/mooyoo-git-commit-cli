@@ -4,7 +4,7 @@ import json from 'json-extra';
 import os from 'os';
 import path from 'path';
 
-import getConfig from '../lib/getConfig';
+import Config from '../lib/config';
 
 const cwd = process.cwd();
 const homedir = os.homedir();
@@ -38,13 +38,13 @@ test.after.always(() => {
 });
 
 test('read config from a specific path', (t) => {
-  t.deepEqual(getConfig(path.join(fixtures, '.sgcrc')), json.readToObjSync(path.join(fixtures, '.sgcrc')));
+  t.deepEqual((new Config(path.join(fixtures, '.sgcrc')).getConfig()), json.readToObjSync(path.join(fixtures, '.sgcrc')));
 });
 
 test('read config from a .sgcrc_default', (t) => {
   const globalConfig = json.readToObjSync(path.join(cwd, '.sgcrc_default'));
 
-  t.deepEqual(getConfig(), globalConfig);
+  t.deepEqual((new Config()).getConfig(), globalConfig);
 });
 
 test('read config from package.json', (t) => {
@@ -57,7 +57,7 @@ test('read config from package.json', (t) => {
   fs.renameSync(path.join(cwd, 'package.json'), path.join(cwd, `package.json.${randomString}-${datetime}.back`));
   fs.writeFileSync(path.join(cwd, 'package.json'), JSON.stringify(packageJson));
 
-  const config = getConfig();
+  const config = (new Config()).getConfig();
 
   // revert local package
   fs.removeSync(path.join(cwd, 'package.json'));
@@ -70,6 +70,6 @@ test('read global config', (t) => {
   const sgcrc = json.readToObjSync(path.join(fixtures, '.sgcrc'));
 
   fs.writeFileSync(path.join(homedir, '.sgcrc'), JSON.stringify(sgcrc));
-  t.deepEqual(getConfig(), sgcrc);
+  t.deepEqual((new Config()).getConfig(), sgcrc);
   fs.removeSync(path.join(homedir, '.sgcrc'));
 });

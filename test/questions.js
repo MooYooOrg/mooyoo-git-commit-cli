@@ -4,7 +4,7 @@ import os from 'os';
 import path from 'path';
 
 import { withEmoji, withoutEmoji } from './fixtures/questions';
-import getConfig from '../lib/getConfig';
+import Config from '../lib/config';
 import questions, {
   choices,
   initMessage,
@@ -43,14 +43,14 @@ test.after.always(() => {
 });
 
 test('choices are rendered without emoji', (t) => {
-  const sgc = getConfig(path.join(fixtures, '.sgcrc'));
+  const sgc = (new Config(path.join(fixtures, '.sgcrc'))).getConfig();
   const choicesList = choices(sgc);
 
   t.deepEqual(choicesList, withoutEmoji);
 });
 
 test('choices are rendered with emoji (default)', (t) => {
-  const sgc = getConfig(path.join(fixtures, '.sgcrc'));
+  const sgc = (new Config(path.join(fixtures, '.sgcrc'))).getConfig();
 
   sgc.emoji = true;
 
@@ -60,14 +60,14 @@ test('choices are rendered with emoji (default)', (t) => {
 });
 
 test('check the values of the question object', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const questionsList = questions(config);
 
   t.is(typeof questionsList, 'object');
 });
 
 test('TYPES | upperCase (default)', (t) => {
-  const sgc = getConfig(path.join(fixtures, '.sgcrc'));
+  const sgc = (new Config(path.join(fixtures, '.sgcrc'))).getConfig();
 
   const choicesList = choices(sgc);
 
@@ -75,7 +75,7 @@ test('TYPES | upperCase (default)', (t) => {
 });
 
 test('TYPES | lowerCase', (t) => {
-  const sgc = getConfig(path.join(fixtures, '.sgcrc'));
+  const sgc = (new Config(path.join(fixtures, '.sgcrc'))).getConfig();
 
   sgc.lowercaseTypes = true;
 
@@ -85,14 +85,14 @@ test('TYPES | lowerCase', (t) => {
 });
 
 test('SCOPE | check if scope is off by default', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const questionsList = questions(config);
 
   t.is(questionsList[1].when(), false);
 });
 
 test('SCOPE | check if scope filters correctly', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const questionsList = questions(config);
 
   t.is(questionsList[1].filter('answer'), '(answer)');
@@ -100,7 +100,7 @@ test('SCOPE | check if scope filters correctly', (t) => {
 });
 
 test('SCOPE | check if scope validates correctly', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const questionsList = questions(config);
 
   t.is(questionsList[1].validate('not correct'), 'No whitespaces allowed');
@@ -108,7 +108,7 @@ test('SCOPE | check if scope validates correctly', (t) => {
 });
 
 test('COMMIT | validate functions in questions', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const questionsList = questions(config);
 
   t.is(questionsList[2].validate('input text'), true);
@@ -116,7 +116,7 @@ test('COMMIT | validate functions in questions', (t) => {
 });
 
 test('COMMIT | when and default functions in questions', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const questionsList = questions(config);
 
   t.is(questionsList[4].when({ body: true }), true);
@@ -125,21 +125,21 @@ test('COMMIT | when and default functions in questions', (t) => {
 });
 
 test('CONFIRM EDITOR | check if it shows if it has to', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const questionsList = questions(config);
 
   t.is(questionsList[3].when(), config.body);
 });
 
 test('INIT COMMIT | check message without emoji', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const message = initMessage(config);
 
   t.is(message, config['initial-commit'].message);
 });
 
 test('INIT COMMIT | check message with emoji', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
 
   config.emoji = true;
 
@@ -149,14 +149,14 @@ test('INIT COMMIT | check message with emoji', (t) => {
 });
 
 test('INIT QUESTION | check message without emoji', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
   const question = initQuestion(config);
 
   t.is(question.message, `Confirm as first commit message: "${config['initial-commit'].message}"`);
 });
 
 test('INIT QUESTION | check message with emoji', (t) => {
-  const config = getConfig();
+  const config = (new Config()).getConfig();
 
   config.emoji = true;
 
