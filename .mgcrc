@@ -42,6 +42,10 @@
       "description": "改动文档、注释"
     },
     {
+      "type": "Chore:",
+      "description": "这个 commit 很乱乱乱！"
+    },
+    {
       "type": "Refactor:",
       "description": "重构了某个功能点"
     },
