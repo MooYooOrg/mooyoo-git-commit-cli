@@ -4,7 +4,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/t9xwo0r3n2oe5ywf/branch/master?svg=true)](https://ci.appveyor.com/project/JPeer264/node-semantic-git-commit-cli/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/JPeer264/node-semantic-git-commit-cli/badge.svg?branch=master)](https://coveralls.io/github/JPeer264/node-semantic-git-commit-cli?branch=master)
 
-
 > A CLI to keep semantic git commits. With emoji support 😄 👍
 
 <img src="https://raw.githubusercontent.com/JPeer264/node-semantic-git-commit-cli/master/media/screenshot.gif">
@@ -20,7 +19,9 @@ Many projects got different git commit rules. It is hard to remember them all. U
 ```sh
 $ npm i -g semantic-git-commit-cli
 ```
+
 or
+
 ```sh
 $ yarn global add semantic-git-commit-cli
 ```
@@ -28,10 +29,13 @@ $ yarn global add semantic-git-commit-cli
 ## Usage
 
 Forget the times when you used `git commit -m "..."`, now just type:
+
 ```sh
 $ sgc
 ```
+
 or if you already have an alias for sgc, use following instead:
+
 ```sh
 $ semantic-git-commit
 ```
@@ -40,45 +44,45 @@ $ semantic-git-commit
 
 > Configure sgc for the following [semantic-release options](https://github.com/semantic-release/semantic-release#plugins): `analyzeCommits` and `generateNotes`
 
-First step, install the following plugins with 
+First step, install the following plugins with
+
 ```sh
 $ npm install --save-dev sr-commit-analyzer sr-release-notes-generator conventional-changelog-eslint
 ```
+
 or
+
 ```sh
 $ yarn add -D sr-commit-analyzer sr-release-notes-generator conventional-changelog-eslint
 ```
-Then, create  a `release.config.js` file in a `config` folder in the root folder of your project :
+
+Then, create a `release.config.js` file in a `config` folder in the root folder of your project :
+
 ```js
 /* eslint-disable no-useless-escape */
 module.exports = {
   analyzeCommits: {
-    preset: 'eslint',
-    releaseRules: './config/release-rules.js', // optional, only if you want to set up new/modified release rules inside another file
-    parserOpts: { // optional, only you want to have emoji commit support
+    preset: "eslint",
+    releaseRules: "./config/release-rules.js", // optional, only if you want to set up new/modified release rules inside another file
+    parserOpts: {
+      // optional, only you want to have emoji commit support
       headerPattern: /^(?::([\w-]*):)?\s*(\w*):\s*(.*)$/,
-      headerCorrespondence: [
-        'emoji',
-        'tag',
-        'message',
-      ],
-    },
+      headerCorrespondence: ["emoji", "tag", "message"]
+    }
   },
   generateNotes: {
-    preset: 'eslint',
-    parserOpts: { // optional, only you want to have emoji commit support
+    preset: "eslint",
+    parserOpts: {
+      // optional, only you want to have emoji commit support
       headerPattern: /^(?::([\w-]*):)?\s*(\w*):\s*(.*)$/,
-      headerCorrespondence: [
-        'emoji',
-        'tag',
-        'message',
-      ],
-    },
-  },
+      headerCorrespondence: ["emoji", "tag", "message"]
+    }
+  }
 };
 ```
 
-Then, update the  `semantic-release ` script to your `package.json` to this : 
+Then, update the `semantic-release` script to your `package.json` to this :
+
 ```json
 "scripts": {
     "semantic-release": "semantic-release -e ./config/release.config.js",
@@ -87,11 +91,12 @@ Then, update the  `semantic-release ` script to your `package.json` to this :
 
 ## Config
 
-> Just create a `.sgcrc` in your project root or you can add everything in your `package.json` with the value `sgc`
+> Just create a `.mgcrc` in your project root or you can add everything in your `package.json` with the value `sgc`
 
-You can even create a global config. Just go to your users home and create a `.sgcrc`. The global config will be triggered if no project configurations are present.
+You can even create a global config. Just go to your users home and create a `.mgcrc`. The global config will be triggered if no project configurations are present.
 
 **Options:**
+
 - [body](#body)
 - [scope](#scope)
 - [emoji](#emoji)
@@ -109,6 +114,7 @@ You can even create a global config. Just go to your users home and create a `.s
 Asks if more info (body) should be added. This will open your default editor.
 
 Example:
+
 ```json
 {
   "body": false
@@ -124,6 +130,7 @@ Example:
 Asks for the scope in parentheses of the commit.
 
 Example:
+
 ```json
 {
   "scope": true
@@ -139,6 +146,7 @@ Example:
 A boolean to enable emoji at the beginning of a commit message
 
 Example:
+
 ```json
 {
   "emoji": true
@@ -154,6 +162,7 @@ Example:
 A boolean to lowercase types.
 
 Example:
+
 ```json
 {
   "lowercaseTypes": true
@@ -184,8 +193,7 @@ Example:
 
 ### types
 
-> Types will define your git commits. If `types` is not set in your own `.sgcrc`, the `types` of the global [.sgcrc](.sgcrc)
-
+> Types will define your git commits. If `types` is not set in your own `.mgcrc`, the `types` of the global [.mgcrc](.mgcrc)
 
 **Keys**
 
@@ -193,17 +201,17 @@ Example:
 - `description` (optional) - The description to explain what your type is about
 - `emoji` (optional) - An emoji which will be appended at the beginning of the commit ([Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/))
 
-The `.sgcrc`:
+The `.mgcrc`:
 
 ```json
 {
-    "types": [
-      {
-        "emoji": ":sparkles:",
-        "type": "Feat:",
-        "description": "Any description to describe the type"
-      }
-    ]
+  "types": [
+    {
+      "emoji": ":sparkles:",
+      "type": "Feat:",
+      "description": "Any description to describe the type"
+    }
+  ]
 }
 ```
 
@@ -211,17 +219,17 @@ or the `package.json`:
 
 ```json
 {
-    "name": "Your application name",
-    "version": "1.0.0",
-    "sgc": {
-        "types": [
-            {
-              "emoji": ":sparkles:",
-              "type": "Feat:",
-              "description": "Any description to describe the type"
-            }
-        ]
-    }
+  "name": "Your application name",
+  "version": "1.0.0",
+  "sgc": {
+    "types": [
+      {
+        "emoji": ":sparkles:",
+        "type": "Feat:",
+        "description": "Any description to describe the type"
+      }
+    ]
+  }
 }
 ```
 
@@ -242,6 +250,7 @@ Available rules:
 If a number is set, it will not allow to commit messages **more than** the given number. If it is set to `-1` the rule is deactivated
 
 Example:
+
 ```json
 {
   "rules": {
@@ -259,6 +268,7 @@ Example:
 If a number is set, it will not allow to commit messages **less than** the given number. If it is set to `-1` the rule is deactivated
 
 Example:
+
 ```json
 {
   "rules": {
@@ -276,6 +286,7 @@ Example:
 If it is set to false, it will not allow to commit messages with a dot at the
 
 Example:
+
 ```json
 {
   "rules": {

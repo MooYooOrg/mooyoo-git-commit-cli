@@ -28,27 +28,27 @@ var cwd = process.cwd();
 var homedir = _os2.default.homedir();
 
 var getConfig = function getConfig(altPath) {
-  var pathString = altPath || _path2.default.join(cwd, '.sgcrc');
+  var pathString = altPath || _path2.default.join(cwd, '.mgcrc');
   var configObject = _jsonExtra2.default.readToObjSync(pathString);
-  var globalConfig = _jsonExtra2.default.readToObjSync(_path2.default.join(homedir, '.sgcrc'));
+  var globalConfig = _jsonExtra2.default.readToObjSync(_path2.default.join(homedir, '.mgcrc'));
   var packageConfig = _jsonExtra2.default.readToObjSync(_path2.default.join(cwd, 'package.json')).sgc;
-  var sgcrcDefaultConfig = _jsonExtra2.default.readToObjSync(_path2.default.join(__dirname, '..', '.sgcrc'));
-  var sgcrcTestDefaultConfig = _jsonExtra2.default.readToObjSync(_path2.default.join(__dirname, '..', '.sgcrc_default'));
+  var mgcrcDefaultConfig = _jsonExtra2.default.readToObjSync(_path2.default.join(__dirname, '..', '.mgcrc'));
+  var mgcrcTestDefaultConfig = _jsonExtra2.default.readToObjSync(_path2.default.join(__dirname, '..', '.mgcrc_default'));
 
-  var sgcrcDefault = sgcrcDefaultConfig || sgcrcTestDefaultConfig;
+  var mgcrcDefault = mgcrcDefaultConfig || mgcrcTestDefaultConfig;
 
   // priority order (1. highest priority):
   // 1. local config
-  //   - 1. .sgcrc
+  //   - 1. .mgcrc
   //   - 2. (package.json).sgc
   // 2. global config
   // 3. default config
-  //   - 1. from ../.sgcrc
-  //   - 2. test case ../.sgcrc is renamed to ../.sgcrc_default
-  var config = configObject || packageConfig || globalConfig || sgcrcDefault;
+  //   - 1. from ../.mgcrc
+  //   - 2. test case ../.mgcrc is renamed to ../.mgcrc_default
+  var config = configObject || packageConfig || globalConfig || mgcrcDefault;
 
   // set defaults which are necessary
-  var tempConfig = (0, _lodash2.default)({}, sgcrcDefault, config);
+  var tempConfig = (0, _lodash2.default)({}, mgcrcDefault, config);
 
   // do not merge types
   // so return them to their set default
