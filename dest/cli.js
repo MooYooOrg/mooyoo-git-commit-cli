@@ -19,6 +19,10 @@ var _inquirer = require('inquirer');
 
 var _inquirer2 = _interopRequireDefault(_inquirer);
 
+var _inquirerAutocompletePrompt = require('inquirer-autocomplete-prompt');
+
+var _inquirerAutocompletePrompt2 = _interopRequireDefault(_inquirerAutocompletePrompt);
+
 var _isGitAdded = require('is-git-added');
 
 var _isGitAdded2 = _interopRequireDefault(_isGitAdded);
@@ -67,6 +71,7 @@ var gitCommitExeca = function gitCommitExeca(message) {
 var argv = _yargs2.default.usage('Usage: $0').alias('v', 'version').describe('v', 'Version number').help('h').alias('h', 'help').argv;
 
 var sgcPrompt = function sgcPrompt() {
+  _inquirer2.default.registerPrompt('autocomplete', _inquirerAutocompletePrompt2.default);
   return _inquirer2.default.prompt(questionsList).then(function (answers) {
     var typeScope = (0, _combineTypeScope2.default)(answers.type, answers.scope);
     var message = answers.body ? '' + answers.editor : typeScope + ' ' + answers.description;

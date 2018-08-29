@@ -11,6 +11,10 @@ var _chalk = require('chalk');
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
+var _fuzzy = require('fuzzy');
+
+var _fuzzy2 = _interopRequireDefault(_fuzzy);
+
 var _combineTypeScope = require('./helpers/combineTypeScope');
 
 var _combineTypeScope2 = _interopRequireDefault(_combineTypeScope);
@@ -42,13 +46,8 @@ var scopeChoices = function scopeChoices(config) {
   var choicesList = [];
 
   config.scopes.forEach(function (scope) {
-    var transformScope = config.lowercaseScopes ? scope.value.toLowerCase() : scope.value;
-    var description = scope.description || '';
-
-    choicesList.push({
-      value: transformScope,
-      name: _chalk2.default.bold(transformScope) + ' ' + description
-    });
+    var transformScope = config.lowercaseScopes ? scope.toLowerCase() : scope;
+    choicesList.push(transformScope);
   });
 
   return choicesList;
@@ -77,14 +76,27 @@ var initQuestion = function initQuestion(config) {
   };
 };
 
+var scopeChoicesList = [];
+
+var searchAsync = function searchAsync(list, input) {
+  var filterInput = input || '';
+  return new Promise(function (resolve) {
+    var fuzzyResult = _fuzzy2.default.filter(filterInput, scopeChoicesList);
+    resolve(fuzzyResult.map(function (el) {
+      return el.original;
+    }));
+  });
+};
+
 var questions = function questions(config) {
   var choicesList = choices(config);
-  var scopeChoicesList = scopeChoices(config);
+  scopeChoicesList = scopeChoices(config);
   var questionsList = [{
     type: 'list',
     name: 'type',
     message: 'Select the type of your commit:',
-    choices: choicesList
+    choices: choicesList,
+    pageSize: 15
   }, {
     type: 'input',
     name: 'scope',
@@ -99,13 +111,18 @@ var questions = function questions(config) {
       return input ? '(' + input + ')' : input;
     }
   }, {
-    type: 'list',
+    type: 'autocomplete',
     name: 'scope',
-    message: 'Select the scope of your commit:',
+    suggestOnly: true,
+    message: 'What\'s the scope of your commit:',
     when: function when() {
       return config.scopeList;
     },
-    choices: scopeChoicesList
+    source: searchAsync,
+    filter: function filter(input) {
+      return input ? '(' + input + ')' : 'No scope';
+    },
+    pageSize: 15
   }, {
     type: 'input',
     name: 'description',
