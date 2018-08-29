@@ -1,29 +1,21 @@
-# semantic-git-commit-cli
-
-[![Build Status](https://travis-ci.org/JPeer264/node-semantic-git-commit-cli.svg?branch=master)](https://travis-ci.org/JPeer264/node-semantic-git-commit-cli)
-[![Build status](https://ci.appveyor.com/api/projects/status/t9xwo0r3n2oe5ywf/branch/master?svg=true)](https://ci.appveyor.com/project/JPeer264/node-semantic-git-commit-cli/branch/master)
-[![Coverage Status](https://coveralls.io/repos/github/JPeer264/node-semantic-git-commit-cli/badge.svg?branch=master)](https://coveralls.io/github/JPeer264/node-semantic-git-commit-cli?branch=master)
+# mooyoo-git-commit-cli
 
 > A CLI to keep semantic git commits. With emoji support 😄 👍
 
-<img src="https://raw.githubusercontent.com/JPeer264/node-semantic-git-commit-cli/master/media/screenshot.gif">
+<img src="https://raw.githubusercontent.com/mooyooorg/mooyoo-git-commit-cli/master/media/screenshot.gif">
 
 ## Why?
 
 Many projects got different git commit rules. It is hard to remember them all. Usually you start with `git commit -m "`, and then? You have to think about the projects commit guidelines.
 
-`sgc` will take care of the commit guidelines, so you can focus on the more important stuff: **code**
+`mgc` will take care of the commit guidelines, so you can focus on the more important stuff: **code**
 
 ## Installation
 
-```sh
-$ npm i -g semantic-git-commit-cli
-```
-
-or
+升级到最新的 nodejs `>= 9.11.1`，最好选用最新版，配合最新的 npm `>= 6`
 
 ```sh
-$ yarn global add semantic-git-commit-cli
+$ npm i -g MooYooOrg/mooyoo-git-commit-cli
 ```
 
 ## Usage
@@ -31,67 +23,18 @@ $ yarn global add semantic-git-commit-cli
 Forget the times when you used `git commit -m "..."`, now just type:
 
 ```sh
-$ sgc
+$ mgc
 ```
 
-or if you already have an alias for sgc, use following instead:
+or if you already have an alias for mgc, use following instead:
 
 ```sh
 $ semantic-git-commit
 ```
 
-### Usage with [semantic-release](https://github.com/semantic-release/semantic-release)
-
-> Configure sgc for the following [semantic-release options](https://github.com/semantic-release/semantic-release#plugins): `analyzeCommits` and `generateNotes`
-
-First step, install the following plugins with
-
-```sh
-$ npm install --save-dev sr-commit-analyzer sr-release-notes-generator conventional-changelog-eslint
-```
-
-or
-
-```sh
-$ yarn add -D sr-commit-analyzer sr-release-notes-generator conventional-changelog-eslint
-```
-
-Then, create a `release.config.js` file in a `config` folder in the root folder of your project :
-
-```js
-/* eslint-disable no-useless-escape */
-module.exports = {
-  analyzeCommits: {
-    preset: "eslint",
-    releaseRules: "./config/release-rules.js", // optional, only if you want to set up new/modified release rules inside another file
-    parserOpts: {
-      // optional, only you want to have emoji commit support
-      headerPattern: /^(?::([\w-]*):)?\s*(\w*):\s*(.*)$/,
-      headerCorrespondence: ["emoji", "tag", "message"]
-    }
-  },
-  generateNotes: {
-    preset: "eslint",
-    parserOpts: {
-      // optional, only you want to have emoji commit support
-      headerPattern: /^(?::([\w-]*):)?\s*(\w*):\s*(.*)$/,
-      headerCorrespondence: ["emoji", "tag", "message"]
-    }
-  }
-};
-```
-
-Then, update the `semantic-release` script to your `package.json` to this :
-
-```json
-"scripts": {
-    "semantic-release": "semantic-release -e ./config/release.config.js",
-}
-```
-
 ## Config
 
-> Just create a `.mgcrc` in your project root or you can add everything in your `package.json` with the value `sgc`
+> Just create a `.mgcrc` in your project root or you can add everything in your `package.json` with the value `mgc`
 
 You can even create a global config. Just go to your users home and create a `.mgcrc`. The global config will be triggered if no project configurations are present.
 
@@ -221,7 +164,7 @@ or the `package.json`:
 {
   "name": "Your application name",
   "version": "1.0.0",
-  "sgc": {
+  "mgc": {
     "types": [
       {
         "emoji": ":sparkles:",
