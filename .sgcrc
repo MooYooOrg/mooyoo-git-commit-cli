@@ -1,58 +1,74 @@
 {
   "scope": false,
-  "body": true,
+  "body": false,
   "emoji": false,
-  "lowercaseTypes": false,
+  "lowercaseTypes": true,
   "initialCommit": {
-    "isEnabled": true,
+    "isEnabled": false,
     "emoji": ":tada:",
     "message": "Initial commit"
   },
   "types": [
     {
-      "emoji": ":wrench:",
-      "type": "Chore:",
-      "description": "Changes that affect the build system or external dependencies and moving files"
+      "emoji": "",
+      "type": "Feature:",
+      "description": "实现了新特性"
     },
     {
-      "emoji": ":construction_worker:",
-      "type": "CI:",
-      "description": "Changes to our CI configuration files and scripts"
-    },
-    {
-      "emoji": ":memo:",
-      "type": "Docs:",
-      "description": "Documentation only changes"
-    },
-    {
-      "emoji": ":sparkles:",
-      "type": "Feat:",
-      "description": "New feature"
-    },
-    {
-      "emoji": ":bug:",
+      "emoji": "",
       "type": "Fix:",
-      "description": "Bug fix"
+      "description": "修复了一个 Bug"
     },
     {
-      "emoji": ":zapr:",
-      "type": "Perf:",
-      "description": "Code change that improves performance"
-    },
-    {
-      "emoji": ":hammer:",
-      "type": "Refactor:",
-      "description": "Code change that neither fixes a bug nor adds a feature"
-    },
-    {
-      "emoji": ":art:",
+      "emoji": "",
       "type": "Style:",
-      "description": "Changes that do not affect the meaning of the code"
+      "description": "调整展现样式，没改动程序或业务逻辑"
     },
     {
-      "emoji": ":white_check_mark:",
+      "emoji": "",
+      "type": "Remove:",
+      "description": "移除废弃或多余的文件、代码"
+    },
+    {
+      "emoji": "",
+      "type": "Perf:",
+      "description": "提升了程序的性能"
+    },
+    {
+      "emoji": "",
+      "type": "Build:",
+      "description": "调整打包的脚本"
+    },
+    {
+      "emoji": "",
+      "type": "CI:",
+      "description": "调整持续集成的脚本"
+    },
+    {
+      "emoji": "",
+      "type": "Docs:",
+      "description": "改动文档、注释"
+    },
+    {
+      "emoji": "",
+      "type": "Refactor:",
+      "description": "重构了某个功能点"
+    },
+    {
+      "emoji": "",
       "type": "Test:",
-      "description": "Adding missing tests or correcting existing tests"
+      "description": "增删改测试代码"
+    }
+  ],
+  "scopeList": true,
+  "scopes": [
+    {
+      "value": "Sdk",
+      "description": "第三方"
+    },
+    {
+      "value": "Support",
+      "description": "不跟随业务的基础模块功能，不依赖于项目可移植使用"
     }
   ],
   "rules": {
