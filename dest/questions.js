@@ -76,9 +76,10 @@ var initQuestion = function initQuestion(config) {
   };
 };
 
+var typeChoicesList = [];
 var scopeChoicesList = [];
 
-var searchAsync = function searchAsync(list, input) {
+var searchScopeAsync = function searchScopeAsync(previousAnswers, input) {
   var filterInput = input || '';
   return new Promise(function (resolve) {
     var fuzzyResult = _fuzzy2.default.filter(filterInput, scopeChoicesList);
@@ -88,14 +89,31 @@ var searchAsync = function searchAsync(list, input) {
   });
 };
 
+var searchTypeAsync = function searchTypeAsync(previousAnswers, input) {
+  var filterInput = input || '';
+  return new Promise(function (resolve) {
+    var fuzzyResult = _fuzzy2.default.filter(filterInput, typeChoicesList);
+    resolve(fuzzyResult.map(function (el) {
+      return el.original;
+    }));
+  });
+};
+
 var questions = function questions(config) {
   var choicesList = choices(config);
+  // change global let
   scopeChoicesList = scopeChoices(config);
+  typeChoicesList = choicesList.map(function (item) {
+    return item.value + item.name;
+  });
   var questionsList = [{
-    type: 'list',
+    type: 'autocomplete',
     name: 'type',
-    message: 'Select the type of your commit:',
-    choices: choicesList,
+    message: 'What\'s the type of your commit:',
+    filter: function filter(input) {
+      return input && input.split(':', 1)[0] ? input.split(':', 1)[0] + ':' : 'chore:';
+    },
+    source: searchTypeAsync,
     pageSize: 15
   }, {
     type: 'input',
@@ -108,17 +126,17 @@ var questions = function questions(config) {
       return input.match(/\s/) !== null ? 'No whitespaces allowed' : true;
     },
     filter: function filter(input) {
-      return input ? '(' + input + ')' : input;
-    }
+      return input ? '(' + input + ')' : 'No scope';
+    },
+    pageSize: 15
   }, {
     type: 'autocomplete',
     name: 'scope',
-    suggestOnly: true,
     message: 'What\'s the scope of your commit:',
     when: function when() {
       return config.scopeList;
     },
-    source: searchAsync,
+    source: searchScopeAsync,
     filter: function filter(input) {
       return input ? '(' + input + ')' : 'No scope';
     },
